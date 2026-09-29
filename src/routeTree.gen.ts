@@ -10,33 +10,154 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as DepartmentsRouteImport } from './routes/departments'
+import { Route as ServicesRouteImport } from './routes/services'
+import { Route as ManagementDashboardRouteImport } from './routes/management.dashboard'
+import { Route as MdaDashboardRouteImport } from './routes/mda.dashboard'
+import { Route as OfficerDashboardRouteImport } from './routes/officer.dashboard'
+import { Route as ServicesEstablishmentRequestRouteImport } from './routes/services.establishment-request'
+import { Route as OfficerCasesIdRouteImport } from './routes/officer.cases.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DepartmentsRoute = DepartmentsRouteImport.update({
+  id: '/departments',
+  path: '/departments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ManagementDashboardRoute = ManagementDashboardRouteImport.update({
+  id: '/management/dashboard',
+  path: '/management/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MdaDashboardRoute = MdaDashboardRouteImport.update({
+  id: '/mda/dashboard',
+  path: '/mda/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OfficerDashboardRoute = OfficerDashboardRouteImport.update({
+  id: '/officer/dashboard',
+  path: '/officer/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesEstablishmentRequestRoute =
+  ServicesEstablishmentRequestRouteImport.update({
+    id: '/establishment-request',
+    path: '/establishment-request',
+    getParentRoute: () => ServicesRoute,
+  } as any)
+const OfficerCasesIdRoute = OfficerCasesIdRouteImport.update({
+  id: '/officer/cases/$id',
+  path: '/officer/cases/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/departments': typeof DepartmentsRoute
+  '/services': typeof ServicesRouteWithChildren
+  '/management/dashboard': typeof ManagementDashboardRoute
+  '/mda/dashboard': typeof MdaDashboardRoute
+  '/officer/dashboard': typeof OfficerDashboardRoute
+  '/services/establishment-request': typeof ServicesEstablishmentRequestRoute
+  '/officer/cases/$id': typeof OfficerCasesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/departments': typeof DepartmentsRoute
+  '/services': typeof ServicesRouteWithChildren
+  '/management/dashboard': typeof ManagementDashboardRoute
+  '/mda/dashboard': typeof MdaDashboardRoute
+  '/officer/dashboard': typeof OfficerDashboardRoute
+  '/services/establishment-request': typeof ServicesEstablishmentRequestRoute
+  '/officer/cases/$id': typeof OfficerCasesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/departments': typeof DepartmentsRoute
+  '/services': typeof ServicesRouteWithChildren
+  '/management/dashboard': typeof ManagementDashboardRoute
+  '/mda/dashboard': typeof MdaDashboardRoute
+  '/officer/dashboard': typeof OfficerDashboardRoute
+  '/services/establishment-request': typeof ServicesEstablishmentRequestRoute
+  '/officer/cases/$id': typeof OfficerCasesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/departments'
+    | '/services'
+    | '/management/dashboard'
+    | '/mda/dashboard'
+    | '/officer/dashboard'
+    | '/services/establishment-request'
+    | '/officer/cases/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/departments'
+    | '/services'
+    | '/management/dashboard'
+    | '/mda/dashboard'
+    | '/officer/dashboard'
+    | '/services/establishment-request'
+    | '/officer/cases/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/departments'
+    | '/services'
+    | '/management/dashboard'
+    | '/mda/dashboard'
+    | '/officer/dashboard'
+    | '/services/establishment-request'
+    | '/officer/cases/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  ContactRoute: typeof ContactRoute
+  DepartmentsRoute: typeof DepartmentsRoute
+  ServicesRoute: typeof ServicesRouteWithChildren
+  ManagementDashboardRoute: typeof ManagementDashboardRoute
+  MdaDashboardRoute: typeof MdaDashboardRoute
+  OfficerDashboardRoute: typeof OfficerDashboardRoute
+  OfficerCasesIdRoute: typeof OfficerCasesIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +169,94 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/departments': {
+      id: '/departments'
+      path: '/departments'
+      fullPath: '/departments'
+      preLoaderRoute: typeof DepartmentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/management/dashboard': {
+      id: '/management/dashboard'
+      path: '/management/dashboard'
+      fullPath: '/management/dashboard'
+      preLoaderRoute: typeof ManagementDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mda/dashboard': {
+      id: '/mda/dashboard'
+      path: '/mda/dashboard'
+      fullPath: '/mda/dashboard'
+      preLoaderRoute: typeof MdaDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/officer/dashboard': {
+      id: '/officer/dashboard'
+      path: '/officer/dashboard'
+      fullPath: '/officer/dashboard'
+      preLoaderRoute: typeof OfficerDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/establishment-request': {
+      id: '/services/establishment-request'
+      path: '/establishment-request'
+      fullPath: '/services/establishment-request'
+      preLoaderRoute: typeof ServicesEstablishmentRequestRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/officer/cases/$id': {
+      id: '/officer/cases/$id'
+      path: '/officer/cases/$id'
+      fullPath: '/officer/cases/$id'
+      preLoaderRoute: typeof OfficerCasesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface ServicesRouteChildren {
+  ServicesEstablishmentRequestRoute: typeof ServicesEstablishmentRequestRoute
+}
+
+const ServicesRouteChildren: ServicesRouteChildren = {
+  ServicesEstablishmentRequestRoute: ServicesEstablishmentRequestRoute,
+}
+
+const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
+  ServicesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  ContactRoute: ContactRoute,
+  DepartmentsRoute: DepartmentsRoute,
+  ServicesRoute: ServicesRouteWithChildren,
+  ManagementDashboardRoute: ManagementDashboardRoute,
+  MdaDashboardRoute: MdaDashboardRoute,
+  OfficerDashboardRoute: OfficerDashboardRoute,
+  OfficerCasesIdRoute: OfficerCasesIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
