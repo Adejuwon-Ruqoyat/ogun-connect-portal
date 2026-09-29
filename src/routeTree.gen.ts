@@ -14,7 +14,11 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DepartmentsRouteImport } from './routes/departments'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as ManagementDashboardRouteImport } from './routes/management.dashboard'
+import { Route as MdaDashboardRouteImport } from './routes/mda.dashboard'
+import { Route as OfficerDashboardRouteImport } from './routes/officer.dashboard'
 import { Route as ServicesEstablishmentRequestRouteImport } from './routes/services.establishment-request'
+import { Route as OfficerCasesIdRouteImport } from './routes/officer.cases.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -41,12 +45,32 @@ const ServicesRoute = ServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ManagementDashboardRoute = ManagementDashboardRouteImport.update({
+  id: '/management/dashboard',
+  path: '/management/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MdaDashboardRoute = MdaDashboardRouteImport.update({
+  id: '/mda/dashboard',
+  path: '/mda/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OfficerDashboardRoute = OfficerDashboardRouteImport.update({
+  id: '/officer/dashboard',
+  path: '/officer/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesEstablishmentRequestRoute =
   ServicesEstablishmentRequestRouteImport.update({
     id: '/establishment-request',
     path: '/establishment-request',
     getParentRoute: () => ServicesRoute,
   } as any)
+const OfficerCasesIdRoute = OfficerCasesIdRouteImport.update({
+  id: '/officer/cases/$id',
+  path: '/officer/cases/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,7 +78,11 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/departments': typeof DepartmentsRoute
   '/services': typeof ServicesRouteWithChildren
+  '/management/dashboard': typeof ManagementDashboardRoute
+  '/mda/dashboard': typeof MdaDashboardRoute
+  '/officer/dashboard': typeof OfficerDashboardRoute
   '/services/establishment-request': typeof ServicesEstablishmentRequestRoute
+  '/officer/cases/$id': typeof OfficerCasesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,7 +90,11 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/departments': typeof DepartmentsRoute
   '/services': typeof ServicesRouteWithChildren
+  '/management/dashboard': typeof ManagementDashboardRoute
+  '/mda/dashboard': typeof MdaDashboardRoute
+  '/officer/dashboard': typeof OfficerDashboardRoute
   '/services/establishment-request': typeof ServicesEstablishmentRequestRoute
+  '/officer/cases/$id': typeof OfficerCasesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,7 +103,11 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/departments': typeof DepartmentsRoute
   '/services': typeof ServicesRouteWithChildren
+  '/management/dashboard': typeof ManagementDashboardRoute
+  '/mda/dashboard': typeof MdaDashboardRoute
+  '/officer/dashboard': typeof OfficerDashboardRoute
   '/services/establishment-request': typeof ServicesEstablishmentRequestRoute
+  '/officer/cases/$id': typeof OfficerCasesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -81,7 +117,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/departments'
     | '/services'
+    | '/management/dashboard'
+    | '/mda/dashboard'
+    | '/officer/dashboard'
     | '/services/establishment-request'
+    | '/officer/cases/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -89,7 +129,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/departments'
     | '/services'
+    | '/management/dashboard'
+    | '/mda/dashboard'
+    | '/officer/dashboard'
     | '/services/establishment-request'
+    | '/officer/cases/$id'
   id:
     | '__root__'
     | '/'
@@ -97,7 +141,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/departments'
     | '/services'
+    | '/management/dashboard'
+    | '/mda/dashboard'
+    | '/officer/dashboard'
     | '/services/establishment-request'
+    | '/officer/cases/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -106,6 +154,10 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   DepartmentsRoute: typeof DepartmentsRoute
   ServicesRoute: typeof ServicesRouteWithChildren
+  ManagementDashboardRoute: typeof ManagementDashboardRoute
+  MdaDashboardRoute: typeof MdaDashboardRoute
+  OfficerDashboardRoute: typeof OfficerDashboardRoute
+  OfficerCasesIdRoute: typeof OfficerCasesIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -145,12 +197,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/management/dashboard': {
+      id: '/management/dashboard'
+      path: '/management/dashboard'
+      fullPath: '/management/dashboard'
+      preLoaderRoute: typeof ManagementDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mda/dashboard': {
+      id: '/mda/dashboard'
+      path: '/mda/dashboard'
+      fullPath: '/mda/dashboard'
+      preLoaderRoute: typeof MdaDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/officer/dashboard': {
+      id: '/officer/dashboard'
+      path: '/officer/dashboard'
+      fullPath: '/officer/dashboard'
+      preLoaderRoute: typeof OfficerDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services/establishment-request': {
       id: '/services/establishment-request'
       path: '/establishment-request'
       fullPath: '/services/establishment-request'
       preLoaderRoute: typeof ServicesEstablishmentRequestRouteImport
       parentRoute: typeof ServicesRoute
+    }
+    '/officer/cases/$id': {
+      id: '/officer/cases/$id'
+      path: '/officer/cases/$id'
+      fullPath: '/officer/cases/$id'
+      preLoaderRoute: typeof OfficerCasesIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -173,6 +253,10 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   DepartmentsRoute: DepartmentsRoute,
   ServicesRoute: ServicesRouteWithChildren,
+  ManagementDashboardRoute: ManagementDashboardRoute,
+  MdaDashboardRoute: MdaDashboardRoute,
+  OfficerDashboardRoute: OfficerDashboardRoute,
+  OfficerCasesIdRoute: OfficerCasesIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
