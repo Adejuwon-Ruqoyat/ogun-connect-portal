@@ -1,0 +1,3 @@
+import { Landmark } from "lucide-react";
+import { cn } from "@/lib/utils";
+export function Brand({ compact=false, inverse=false }: {compact?:boolean;inverse?:boolean}) { return <div className="flex items-center gap-3"><span className={cn("grid size-11 shrink-0 place-items-center border-2",inverse?"border-primary-foreground/40 text-primary-foreground":"border-primary/30 bg-primary/5 text-primary")}><Landmark className="size-6" aria-hidden /></span><div className={cn("leading-tight",inverse?"text-primary-foreground":"text-foreground")}><p className="text-[10px] font-bold uppercase tracking-[.16em]">Ogun State</p>{!compact&&<p className="font-display text-sm font-semibold">Bureau of Establishments &amp; Training</p>}</div></div> }
