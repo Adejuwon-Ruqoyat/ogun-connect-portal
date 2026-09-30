@@ -18,7 +18,9 @@ import { Route as ManagementDashboardRouteImport } from './routes/management.das
 import { Route as MdaDashboardRouteImport } from './routes/mda.dashboard'
 import { Route as OfficerDashboardRouteImport } from './routes/officer.dashboard'
 import { Route as ServicesEstablishmentRequestRouteImport } from './routes/services.establishment-request'
+import { Route as MdaRequestsIdRouteImport } from './routes/mda.requests.$id'
 import { Route as OfficerCasesIdRouteImport } from './routes/officer.cases.$id'
+import { Route as MdaRequestsNewEstablishmentRouteImport } from './routes/mda.requests.new.establishment'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -66,11 +68,22 @@ const ServicesEstablishmentRequestRoute =
     path: '/establishment-request',
     getParentRoute: () => ServicesRoute,
   } as any)
+const MdaRequestsIdRoute = MdaRequestsIdRouteImport.update({
+  id: '/mda/requests/$id',
+  path: '/mda/requests/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OfficerCasesIdRoute = OfficerCasesIdRouteImport.update({
   id: '/officer/cases/$id',
   path: '/officer/cases/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MdaRequestsNewEstablishmentRoute =
+  MdaRequestsNewEstablishmentRouteImport.update({
+    id: '/mda/requests/new/establishment',
+    path: '/mda/requests/new/establishment',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -82,7 +95,9 @@ export interface FileRoutesByFullPath {
   '/mda/dashboard': typeof MdaDashboardRoute
   '/officer/dashboard': typeof OfficerDashboardRoute
   '/services/establishment-request': typeof ServicesEstablishmentRequestRoute
+  '/mda/requests/$id': typeof MdaRequestsIdRoute
   '/officer/cases/$id': typeof OfficerCasesIdRoute
+  '/mda/requests/new/establishment': typeof MdaRequestsNewEstablishmentRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -94,7 +109,9 @@ export interface FileRoutesByTo {
   '/mda/dashboard': typeof MdaDashboardRoute
   '/officer/dashboard': typeof OfficerDashboardRoute
   '/services/establishment-request': typeof ServicesEstablishmentRequestRoute
+  '/mda/requests/$id': typeof MdaRequestsIdRoute
   '/officer/cases/$id': typeof OfficerCasesIdRoute
+  '/mda/requests/new/establishment': typeof MdaRequestsNewEstablishmentRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -107,7 +124,9 @@ export interface FileRoutesById {
   '/mda/dashboard': typeof MdaDashboardRoute
   '/officer/dashboard': typeof OfficerDashboardRoute
   '/services/establishment-request': typeof ServicesEstablishmentRequestRoute
+  '/mda/requests/$id': typeof MdaRequestsIdRoute
   '/officer/cases/$id': typeof OfficerCasesIdRoute
+  '/mda/requests/new/establishment': typeof MdaRequestsNewEstablishmentRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -121,7 +140,9 @@ export interface FileRouteTypes {
     | '/mda/dashboard'
     | '/officer/dashboard'
     | '/services/establishment-request'
+    | '/mda/requests/$id'
     | '/officer/cases/$id'
+    | '/mda/requests/new/establishment'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,7 +154,9 @@ export interface FileRouteTypes {
     | '/mda/dashboard'
     | '/officer/dashboard'
     | '/services/establishment-request'
+    | '/mda/requests/$id'
     | '/officer/cases/$id'
+    | '/mda/requests/new/establishment'
   id:
     | '__root__'
     | '/'
@@ -145,7 +168,9 @@ export interface FileRouteTypes {
     | '/mda/dashboard'
     | '/officer/dashboard'
     | '/services/establishment-request'
+    | '/mda/requests/$id'
     | '/officer/cases/$id'
+    | '/mda/requests/new/establishment'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -157,7 +182,9 @@ export interface RootRouteChildren {
   ManagementDashboardRoute: typeof ManagementDashboardRoute
   MdaDashboardRoute: typeof MdaDashboardRoute
   OfficerDashboardRoute: typeof OfficerDashboardRoute
+  MdaRequestsIdRoute: typeof MdaRequestsIdRoute
   OfficerCasesIdRoute: typeof OfficerCasesIdRoute
+  MdaRequestsNewEstablishmentRoute: typeof MdaRequestsNewEstablishmentRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -225,11 +252,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesEstablishmentRequestRouteImport
       parentRoute: typeof ServicesRoute
     }
+    '/mda/requests/$id': {
+      id: '/mda/requests/$id'
+      path: '/mda/requests/$id'
+      fullPath: '/mda/requests/$id'
+      preLoaderRoute: typeof MdaRequestsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/officer/cases/$id': {
       id: '/officer/cases/$id'
       path: '/officer/cases/$id'
       fullPath: '/officer/cases/$id'
       preLoaderRoute: typeof OfficerCasesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mda/requests/new/establishment': {
+      id: '/mda/requests/new/establishment'
+      path: '/mda/requests/new/establishment'
+      fullPath: '/mda/requests/new/establishment'
+      preLoaderRoute: typeof MdaRequestsNewEstablishmentRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -256,7 +297,9 @@ const rootRouteChildren: RootRouteChildren = {
   ManagementDashboardRoute: ManagementDashboardRoute,
   MdaDashboardRoute: MdaDashboardRoute,
   OfficerDashboardRoute: OfficerDashboardRoute,
+  MdaRequestsIdRoute: MdaRequestsIdRoute,
   OfficerCasesIdRoute: OfficerCasesIdRoute,
+  MdaRequestsNewEstablishmentRoute: MdaRequestsNewEstablishmentRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
