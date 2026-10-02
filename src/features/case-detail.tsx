@@ -1,4 +1,80 @@
-import { useState } from "react"; import { ArrowLeft,Check,CheckCircle2,Clock3,Download,FileText,MessageSquare,Send } from "lucide-react"; import { Link,useParams } from "@tanstack/react-router"; import { DashboardLayout,DashboardHeading } from "@/layouts/dashboard-layout"; import { StatusBadge,PriorityBadge } from "@/components/status-badge"; import { Button } from "@/components/ui/button"; import { Card,CardContent,CardHeader,CardTitle } from "@/components/ui/card"; import { Checkbox } from "@/components/ui/checkbox"; import { Textarea } from "@/components/ui/textarea"; import type { Status } from "@/types";
-const flow:Status[]=["Submitted","Under Review","Clarification Required","Recommended","Approved","Closed"];
-export function CaseDetailPage(){const {id}=useParams({from:"/officer/cases/$id"});const[status,setStatus]=useState<Status>("Under Review"),[checks,setChecks]=useState([true,true,false,false]),[comment,setComment]=useState(""),[notes,setNotes]=useState<string[]>(["Initial documentation verified by D. A. Akinola."]);return <DashboardLayout role="Officer" title="Case Detail"><Link to="/officer/dashboard" className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-primary"><ArrowLeft className="size-4"/>Back to work queue</Link><DashboardHeading eyebrow="Establishment request" title="Creation of 24 Community Health Officer posts" text={`Case ${id.replaceAll("-","/")}`} action={<div className="flex gap-2"><PriorityBadge priority="High"/><StatusBadge status={status}/></div>}/><div className="grid gap-6 xl:grid-cols-[1.45fr_.65fr]"><div className="grid gap-6"><Card><CardContent className="p-6"><div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4"><Datum label="MDA" value="Ministry of Health"/><Datum label="Requester" value="Mrs. A. O. Adeyemi"/><Datum label="Submitted" value="24 September 2026"/><Datum label="Service standard" value="10 working days"/></div></CardContent></Card><Panel title="Establishment details"><div className="grid gap-5 sm:grid-cols-3"><Datum label="Current approved posts" value="186"/><Datum label="Proposed additional posts" value="24"/><Datum label="Proposed total" value="210"/></div><div className="mt-6 border-t pt-5"><p className="text-xs font-bold uppercase text-muted-foreground">Justification</p><p className="mt-2 text-sm leading-6">The request supports staffing of eight newly commissioned primary healthcare centres across Ogun Central and Ogun East senatorial districts, with three officers allocated to each facility.</p></div></Panel><Panel title="Supporting documents"><div className="grid gap-2">{["Signed establishment request memo.pdf","Approved 2026 organogram.pdf","Budget provision extract.xlsx","Community health staffing analysis.pdf"].map((f,i)=><div key={f} className="flex items-center gap-3 border p-3"><FileText className="size-5 text-primary"/><div className="flex-1"><p className="text-sm font-semibold">{f}</p><p className="text-xs text-muted-foreground">{i%2?"1.2 MB":"684 KB"} • Uploaded 24 Sep</p></div><Button variant="ghost" size="icon" aria-label={`Download ${f}`} onClick={()=>alert("Mock download started")}><Download/></Button></div>)}</div></Panel><Panel title="Review checklist"><div className="grid gap-3">{["Authorised MDA submission","Current organogram attached","Budget provision confirmed","Staffing analysis supports request"].map((x,i)=><label key={x} className="flex cursor-pointer items-center gap-3 border p-3 text-sm"><Checkbox checked={checks[i] ?? false} onCheckedChange={()=>setChecks(c=>c.map((v,j)=>i===j?!v:v))}/><span className="flex-1 font-medium">{x}</span>{checks[i]&&<Check className="size-4 text-success"/>}</label>)}</div></Panel><Panel title="Officer comments"><div className="grid gap-3">{notes.map(n=><div key={n} className="border-l-2 border-primary bg-muted/40 p-3 text-sm">{n}</div>)}</div><div className="mt-4 flex gap-2"><Textarea value={comment} onChange={e=>setComment(e.target.value)} placeholder="Add an internal review note…"/><Button size="icon" className="h-auto" disabled={!comment.trim()} onClick={()=>{setNotes([...notes,comment]);setComment("")}} aria-label="Add comment"><Send/></Button></div></Panel></div><aside className="grid content-start gap-6"><Panel title="Workflow"><div className="relative grid gap-0">{flow.map((s,i)=>{const active=flow.indexOf(status)>=i;return <div key={s} className="relative flex min-h-14 gap-3"><div className={`relative z-10 grid size-7 shrink-0 place-items-center rounded-full border ${active?"border-primary bg-primary text-primary-foreground":"bg-background text-muted-foreground"}`}>{active?<Check className="size-3"/>:i+1}</div>{i<flow.length-1&&<span className="absolute left-3.5 top-7 h-7 border-l"/>}<div><p className={`text-sm font-semibold ${active?"text-foreground":"text-muted-foreground"}`}>{s}</p>{s===status&&<p className="text-xs text-primary">Current stage</p>}</div></div>})}</div><div className="mt-3 grid gap-2 border-t pt-4"><Button onClick={()=>{const i=flow.indexOf(status);const next=flow[i+1];if(next)setStatus(next)}}>Advance case</Button><Button variant="outline" onClick={()=>setStatus("Clarification Required")}>Request clarification</Button><Button variant="outline" className="text-destructive" onClick={()=>setStatus("Rejected")}>Reject request</Button></div></Panel><Panel title="Activity timeline"><div className="border-l pl-5">{[["Case assigned to you","Today, 09:12"],["Initial review started","28 Sep, 14:40"],["Request submitted","24 Sep, 10:26"]].map(([t,d])=><div key={t} className="relative pb-6 last:pb-0"><span className="absolute -left-[25px] top-1 size-2 rounded-full bg-primary"/><p className="text-sm font-semibold">{t}</p><p className="text-xs text-muted-foreground">{d}</p></div>)}</div></Panel></aside></div></DashboardLayout>}
-function Panel({title,children}:{title:string;children:React.ReactNode}){return <Card><CardHeader><CardTitle className="font-display text-lg">{title}</CardTitle></CardHeader><CardContent>{children}</CardContent></Card>}function Datum({label,value}:{label:string;value:string}){return <div><p className="text-xs font-bold uppercase text-muted-foreground">{label}</p><p className="mt-1 text-sm font-semibold">{value}</p></div>}
+import { useState } from "react";
+import { ArrowLeft, Check, Download, FileText, Send } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { DashboardLayout, DashboardHeading } from "@/layouts/dashboard-layout";
+import { StatusBadge, PriorityBadge } from "@/components/status-badge";
+import { EmptyState } from "@/components/page-state";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { PositionsTable } from "@/features/establishment-request-form";
+import { checklistItems, ASSIGNED_OFFICER } from "@/data/mock-data";
+import { nowLabel, updateCase, useCase } from "@/data/request-store";
+import type { Status } from "@/types";
+
+type Mode = "officer" | "management" | "mda";
+const roleOf = { officer: "Officer", management: "Management", mda: "MDA" } as const;
+const back = { officer: ["/officer/dashboard", "Back to work queue"], management: ["/management/dashboard", "Back to management dashboard"], mda: ["/mda/dashboard", "Back to dashboard"] } as const;
+const actions: { label: string; to: Status; from: Status[]; event: string; variant?: "outline" }[] = [
+  { label: "Start Review", to: "Under Review", from: ["Submitted", "Clarification Required"], event: "Under review" },
+  { label: "Request Clarification", to: "Clarification Required", from: ["Submitted", "Under Review"], event: "Clarification requested from MDA", variant: "outline" },
+  { label: "Recommend Approval", to: "Recommended", from: ["Under Review"], event: "Recommended for approval", variant: "outline" },
+  { label: "Reject", to: "Rejected", from: ["Submitted", "Under Review", "Clarification Required"], event: "Request rejected", variant: "outline" },
+  { label: "Close Case", to: "Closed", from: ["Approved", "Rejected", "Recommended"], event: "Case closed", variant: "outline" },
+];
+
+export function CaseDetailPage({ id, mode }: { id: string; mode: Mode }) {
+  const c = useCase(id);
+  const [comment, setComment] = useState("");
+  const [notice, setNotice] = useState("");
+  const [b, backLabel] = back[mode];
+  const role = roleOf[mode];
+  if (!c) return <DashboardLayout role={role} title="Case not found"><Link to={b} className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-primary"><ArrowLeft className="size-4" />{backLabel}</Link><EmptyState title={`No case found for ${id}`} text="Check the reference number and try again." /></DashboardLayout>;
+  const officer = mode === "officer";
+  const act = (a: (typeof actions)[number]) => {
+    updateCase(c.ref, (x) => ({ ...x, status: a.to, updated: "Today", timeline: [...x.timeline, { date: nowLabel(), text: `${a.event} by ${ASSIGNED_OFFICER}` }] }));
+    setNotice(`Status updated to “${a.to}”. The MDA has been notified.`);
+  };
+  const addComment = () => {
+    const text = comment.trim(); if (!text) return;
+    updateCase(c.ref, (x) => ({ ...x, comments: [...x.comments, { author: ASSIGNED_OFFICER, date: nowLabel(), text }], timeline: [...x.timeline, { date: nowLabel(), text: "Internal note added" }] }));
+    setComment(""); setNotice("Comment added to the case record.");
+  };
+  return (
+    <DashboardLayout role={role} title={mode === "management" ? "Case overview (read-only)" : mode === "mda" ? "Request status" : "Case Detail"}>
+      <Link to={b} className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-primary"><ArrowLeft className="size-4" />{backLabel}</Link>
+      <DashboardHeading eyebrow={c.service} title={c.ref} text={c.title} action={<div className="flex flex-wrap gap-2"><PriorityBadge priority={c.priority} /><StatusBadge status={c.status} /></div>} />
+      {notice && <div role="status" className="mb-6 flex items-center gap-2 border-l-4 border-success bg-success/10 p-3 text-sm font-medium"><Check className="size-4 text-success" />{notice}</div>}
+      {mode !== "officer" && <div className="mb-6 border bg-muted/40 p-3 text-sm text-muted-foreground">Read-only view. Workflow actions are performed by the assigned Bureau officer.</div>}
+      <div className="grid gap-6 xl:grid-cols-[1.45fr_.65fr]">
+        <div className="grid min-w-0 content-start gap-6">
+          <Card><CardContent className="grid gap-5 p-5 sm:grid-cols-2 lg:grid-cols-3 sm:p-6">
+            <Datum label="MDA" value={c.mda} /><Datum label="Requesting officer" value={c.requester} /><Datum label="Submission date" value={c.submitted} />
+            <div><p className="text-xs font-bold uppercase text-muted-foreground">Current status</p><div className="mt-1"><StatusBadge status={c.status} /></div></div>
+            <div><p className="text-xs font-bold uppercase text-muted-foreground">Priority</p><div className="mt-1"><PriorityBadge priority={c.priority} /></div></div>
+            <Datum label="Assigned officer" value={c.assignedTo} />
+          </CardContent></Card>
+          <Panel title="A. Request summary"><div className="grid gap-5 sm:grid-cols-2"><Datum label="Request title" value={c.title} /><Datum label="Request type" value={c.requestType} /><Datum label="Department" value={c.department} /><Datum label="Contact" value={`${c.email} • ${c.phone}`} /></div><div className="mt-5 border-t pt-5"><p className="text-xs font-bold uppercase text-muted-foreground">Justification</p><p className="mt-2 text-sm leading-6">{c.justification}</p></div></Panel>
+          <Panel title="B. Establishment details">{c.positions.length ? <PositionsTable positions={c.positions} /> : <EmptyState title="No positions on this request" text="This service does not include establishment positions." />}</Panel>
+          <Panel title="C. Supporting documents"><div className="border"><Table><TableHeader><TableRow><TableHead>Document</TableHead><TableHead>File</TableHead><TableHead>Status</TableHead><TableHead /></TableRow></TableHeader><TableBody>{c.documents.map((d) => <TableRow key={d.label}><TableCell className="font-medium">{d.label}</TableCell><TableCell><span className="flex items-center gap-2"><FileText className="size-4 shrink-0 text-primary" /><span><span className="block">{d.name}</span><span className="text-xs text-muted-foreground">{d.type} • {d.size}</span></span></span></TableCell><TableCell><Badge variant="outline" className={d.status === "Verified" ? "border-success/20 bg-success/10 text-success" : "border-warning/30 bg-warning/10 text-warning-foreground"}>{d.status}</Badge></TableCell><TableCell><Button variant="ghost" size="icon" aria-label={`Download ${d.name}`} onClick={() => setNotice(`Mock download of ${d.name} started.`)}><Download /></Button></TableCell></TableRow>)}</TableBody></Table></div></Panel>
+          <Panel title="D. Review checklist"><div className="grid gap-2">{checklistItems.map((x, i) => { const done = c.checklist[i] ?? false; return (
+            <label key={x} className={`flex items-center gap-3 border p-3 text-sm ${officer ? "cursor-pointer" : ""}`}>
+              <Checkbox checked={done} disabled={!officer} onCheckedChange={() => updateCase(c.ref, (y) => ({ ...y, checklist: checklistItems.map((_, j) => (j === i ? !(y.checklist[j] ?? false) : (y.checklist[j] ?? false))) }))} />
+              <span className="flex-1 font-medium">{x}</span><span className={`text-xs font-semibold ${done ? "text-success" : "text-muted-foreground"}`}>{done ? "Complete" : "Pending"}</span>
+            </label>); })}</div><p className="mt-3 text-xs text-muted-foreground">{c.checklist.filter(Boolean).length} of {checklistItems.length} checks complete</p></Panel>
+          <Panel title="E. Comments & internal notes"><div className="grid gap-3">{c.comments.length ? c.comments.map((n, i) => <div key={i} className="border-l-2 border-primary bg-muted/40 p-3 text-sm"><p>{n.text}</p><p className="mt-1 text-xs text-muted-foreground">{n.author} • {n.date}</p></div>) : <p className="text-sm text-muted-foreground">No comments yet.</p>}</div>
+            {officer && <div className="mt-4 flex gap-2"><Textarea aria-label="Add an internal note" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Add an internal review note…" /><Button className="h-auto" disabled={!comment.trim()} onClick={addComment} aria-label="Add comment"><Send />Add</Button></div>}</Panel>
+        </div>
+        <aside className="grid content-start gap-6">
+          {officer && <Panel title="G. Workflow actions"><div className="grid gap-2">{actions.map((a) => <Button key={a.label} variant={a.variant ?? "default"} className={a.to === "Rejected" ? "text-destructive" : ""} disabled={!a.from.includes(c.status)} onClick={() => act(a)}>{a.label}</Button>)}</div><p className="mt-3 text-xs text-muted-foreground">Only actions valid for the current status are enabled.</p></Panel>}
+          <Panel title="F. Case timeline"><ol className="border-l pl-5">{[...c.timeline].reverse().map((t, i) => <li key={i} className="relative pb-5 last:pb-0"><span className="absolute -left-[25px] top-1.5 size-2 rounded-full bg-primary" /><p className="text-sm font-semibold">{t.text}</p><p className="text-xs text-muted-foreground">{t.date}</p></li>)}</ol></Panel>
+        </aside>
+      </div>
+    </DashboardLayout>
+  );
+}
+function Panel({ title, children }: { title: string; children: React.ReactNode }) { return <Card className="min-w-0"><CardHeader><CardTitle className="font-display text-lg">{title}</CardTitle></CardHeader><CardContent>{children}</CardContent></Card>; }
+function Datum({ label, value }: { label: string; value: string }) { return <div className="min-w-0"><p className="text-xs font-bold uppercase text-muted-foreground">{label}</p><p className="mt-1 break-words text-sm font-semibold">{value}</p></div>; }
