@@ -1,4 +1,1 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
-export const Route = createFileRoute("/services/establishment-request")({
-  beforeLoad: () => { throw redirect({ to: "/mda/requests/new/establishment" }); },
-});
+import{createFileRoute}from"@tanstack/react-router";import{EstablishmentRequestPage}from"@/features/establishment-request-form";export const Route=createFileRoute("/services/establishment-request")({head:()=>({meta:[{title:"Establishment Request — Ogun State Bureau"},{name:"description",content:"Submit an establishment request to the Ogun State Bureau."},{property:"og:title",content:"Establishment Request"},{property:"og:description",content:"A guided establishment request service for Ogun State MDAs."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary_large_image"}]}),component:EstablishmentRequestPage});
